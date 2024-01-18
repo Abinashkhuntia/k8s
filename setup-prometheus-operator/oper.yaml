@@ -1,0 +1,83 @@
+Name:             prometheus-kube-prometheus-operator-69846bfdb9-94cxh
+Namespace:        default
+Priority:         0
+Service Account:  prometheus-kube-prometheus-operator
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 27 Dec 2023 22:41:14 +0530
+Labels:           app=kube-prometheus-stack-operator
+                  app.kubernetes.io/instance=prometheus
+                  app.kubernetes.io/managed-by=Helm
+                  app.kubernetes.io/part-of=kube-prometheus-stack
+                  app.kubernetes.io/version=55.5.0
+                  chart=kube-prometheus-stack-55.5.0
+                  heritage=Helm
+                  pod-template-hash=69846bfdb9
+                  release=prometheus
+Annotations:      <none>
+Status:           Running
+SeccompProfile:   RuntimeDefault
+IP:               10.244.0.4
+IPs:
+  IP:           10.244.0.4
+Controlled By:  ReplicaSet/prometheus-kube-prometheus-operator-69846bfdb9
+Containers:
+  kube-prometheus-stack:
+    Container ID:  docker://6eaf073961db454f0f29f746cdbceac2b653316e1ebe1d01b794721d4a11b1a6
+    Image:         quay.io/prometheus-operator/prometheus-operator:v0.70.0
+    Image ID:      docker-pullable://quay.io/prometheus-operator/prometheus-operator@sha256:5ce078d4cd5d0b39bbb2d323a7902eb05680276e25a041115db9128f61b451c8
+    Port:          10250/TCP
+    Host Port:     0/TCP
+    Args:
+      --kubelet-service=kube-system/prometheus-kube-prometheus-kubelet
+      --localhost=127.0.0.1
+      --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.70.0
+      --config-reloader-cpu-request=0
+      --config-reloader-cpu-limit=0
+      --config-reloader-memory-request=0
+      --config-reloader-memory-limit=0
+      --thanos-default-base-image=quay.io/thanos/thanos:v0.32.5
+      --secret-field-selector=type!=kubernetes.io/dockercfg,type!=kubernetes.io/service-account-token,type!=helm.sh/release.v1
+      --web.enable-tls=true
+      --web.cert-file=/cert/cert
+      --web.key-file=/cert/key
+      --web.listen-address=:10250
+      --web.tls-min-version=VersionTLS13
+    State:          Running
+      Started:      Wed, 27 Dec 2023 22:41:41 +0530
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      GOGC:  30
+    Mounts:
+      /cert from tls-secret (ro)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-gf4hg (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  tls-secret:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  prometheus-kube-prometheus-admission
+    Optional:    false
+  kube-api-access-gf4hg:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  22m   default-scheduler  Successfully assigned default/prometheus-kube-prometheus-operator-69846bfdb9-94cxh to minikube
+  Normal  Pulling    22m   kubelet            Pulling image "quay.io/prometheus-operator/prometheus-operator:v0.70.0"
+  Normal  Pulled     21m   kubelet            Successfully pulled image "quay.io/prometheus-operator/prometheus-operator:v0.70.0" in 12.708s (25.126s including waiting)
+  Normal  Created    21m   kubelet            Created container kube-prometheus-stack
+  Normal  Started    21m   kubelet            Started container kube-prometheus-stack
+

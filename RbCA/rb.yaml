@@ -1,0 +1,24 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: my-role-binding
+  namespace: default
+subjects:
+- kind: User
+  name: my-user
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer # createed in the role file
+  apiGroup: rbac.authorization.k8s.io
+
+# for kind serviceaccount and group use accordingly 
+# subjects:
+# - kind: group
+#   name: my-gp
+#   apiGroup: rbac.authorization.k8s.io
+
+# subjects:
+# - kind: serviceaccount
+#   name: deafult
+#   namespace: default

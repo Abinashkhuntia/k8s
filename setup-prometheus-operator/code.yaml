@@ -1,0 +1,100 @@
+Name:         prometheus-kube-prometheus-prometheus
+Namespace:    default
+Labels:       app=kube-prometheus-stack-prometheus
+              app.kubernetes.io/instance=prometheus
+              app.kubernetes.io/managed-by=Helm
+              app.kubernetes.io/part-of=kube-prometheus-stack
+              app.kubernetes.io/version=55.5.0
+              chart=kube-prometheus-stack-55.5.0
+              heritage=Helm
+              release=prometheus
+Annotations:  meta.helm.sh/release-name: prometheus
+              meta.helm.sh/release-namespace: default
+API Version:  monitoring.coreos.com/v1
+Kind:         Prometheus
+Metadata:
+  Creation Timestamp:  2024-01-01T09:07:03Z
+  Generation:          1
+  Resource Version:    1858
+  UID:                 afcb80ef-62f5-43f6-86df-f993374d8866
+Spec:
+  Alerting:
+    Alertmanagers:
+      API Version:      v2
+      Name:             prometheus-kube-prometheus-alertmanager
+      Namespace:        default
+      Path Prefix:      /
+      Port:             http-web
+  Enable Admin API:     false
+  Evaluation Interval:  30s
+  External URL:         http://prometheus-kube-prometheus-prometheus.default:9090
+  Host Network:         false
+  Image:                quay.io/prometheus/prometheus:v2.48.1
+  Listen Local:         false
+  Log Format:           logfmt
+  Log Level:            info
+  Paused:               false
+  Pod Monitor Namespace Selector:
+  Pod Monitor Selector:
+    Match Labels:
+      Release:  prometheus
+  Port Name:    http-web
+  Probe Namespace Selector:
+  Probe Selector:
+    Match Labels:
+      Release:   prometheus
+  Replicas:      1
+  Retention:     10d
+  Route Prefix:  /
+  Rule Namespace Selector:
+  Rule Selector:
+    Match Labels:
+      Release:  prometheus
+  Scrape Config Namespace Selector:
+  Scrape Config Selector:
+    Match Labels:
+      Release:      prometheus
+  Scrape Interval:  30s
+  Security Context:
+    Fs Group:         2000
+    Run As Group:     2000
+    Run As Non Root:  true
+    Run As User:      1000
+    Seccomp Profile:
+      Type:              RuntimeDefault
+  Service Account Name:  prometheus-kube-prometheus-prometheus
+  Service Monitor Namespace Selector:
+  Service Monitor Selector:
+    Match Labels:
+      Release:  prometheus
+  Shards:       1
+  Tsdb:
+    Out Of Order Time Window:  0s
+  Version:                     v2.48.1
+  Wal Compression:             true
+Status:
+  Available Replicas:  1
+  Conditions:
+    Last Transition Time:  2024-01-01T09:24:36Z
+    Message:               
+    Observed Generation:   1
+    Reason:                
+    Status:                True
+    Type:                  Available
+    Last Transition Time:  2024-01-01T09:24:36Z
+    Message:               
+    Observed Generation:   1
+    Reason:                
+    Status:                True
+    Type:                  Reconciled
+  Paused:                  false
+  Replicas:                1
+  Shard Statuses:
+    Available Replicas:    1
+    Replicas:              1
+    Shard ID:              0
+    Unavailable Replicas:  0
+    Updated Replicas:      1
+  Unavailable Replicas:    0
+  Updated Replicas:        1
+Events:                    <none>

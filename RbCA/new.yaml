@@ -1,0 +1,25 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default #namespace: default is used to specify the default namespace for the role
+  name: developer
+rules:
+- apiGroups: #apiGroups: [""] is used to specify the core API group
+    - ""
+  resources:
+    - pods
+    - secrets
+  verbs:
+    - get
+    - create
+    - list
+  resourceNames: #this helps to specify the name of the resource that the role can only access within the namespace
+    - my-app
+    
+- apiGroups:
+    - ""
+  resources:
+    - secrets
+  verbs:
+    - get
+    
