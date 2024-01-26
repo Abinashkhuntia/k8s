@@ -1,0 +1,76 @@
+#!/usr/bin/env groovy
+
+pipeline {
+    agent any
+    tools {
+        maven 'maven'
+    }
+    environment {
+        ECR_REPO_URL = '821578886738.dkr.ecr.ap-south-1.amazonaws.com'
+        IMAGE_REPO = "${ECR_REPO_URL}/my-app"
+    }
+    stages {
+        stage('increment version') {
+            steps {
+                script {
+                    echo 'incrementing app version...'
+                    sh 'mvn build-helper:parse-version versions:set \
+                        -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
+                        versions:commit'
+                    def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+                    def version = matcher[0][1]
+                    env.IMAGE_NAME = "$version-$BUILD_NUMBER"
+                    echo "############ ${IMAGE_REPO}"
+                }
+            }
+        }
+        stage('build app') {
+            steps {
+               script {
+                   echo "building the application..."
+                   sh 'mvn clean package'
+               }
+            }
+        }
+        stage('build image') {
+            steps {
+                script {
+                    echo "building the docker image..."
+                    withCredentials([usernamePassword(credentialsId: '2024a8aa-56f0-41e4-ba56-7f84faad1542', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        sh "docker build -t ${IMAGE_REPO}:${IMAGE_NAME} ."
+                        sh "echo $PASS | docker login -u $USER --password-stdin ${ECR_REPO_URL}"
+                        sh "docker push ${IMAGE_REPO}:${IMAGE_NAME}"
+                    }
+                }
+            }
+        }
+        stage('deploy') {
+            environment {
+                APP_NAME = 'my-app'
+            }
+            steps {
+                script {
+                 withCredentials([usernamePassword(credentialsId: '28b3e487-4aed-4a0e-a888-20772046c69c', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+
+                    echo 'deploying docker image...'
+                    sh 'envsubst < kubernetes/deployment.yaml | kubectl apply -f -'
+                    sh 'envsubst < kubernetes/service.yaml | kubectl apply -f -'
+                }
+            }
+        }
+        stage('commit version update') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: '45e9bdb6-6437-4b39-afea-62d5a936589e', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        sh 'git config user.email "jenkins@example.com"'
+                        sh 'git config user.name "Jenkins"'
+                        sh "git remote origin git@github.com:Abinashkhuntia/k8s.git "
+                        sh 'git add .'
+                        sh 'git commit -m "ci: version bump"'
+                        sh 'git push origin HEAD:master'
+                    }
+                }
+            }
+        }
+    }
+}
